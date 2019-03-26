@@ -1,7 +1,6 @@
 name = "codelabs"
 license = "APACHE"
 licenselink = "https://www.apache.org/licenses/LICENSE-2.0"
-description = "An elegant, mobile-ready, minimalistic theme."
 description = "A hugo theme of Google's codelabs."
 homepage = "https://github.com/nekocode/codelabs-hugo-theme"
 tags = ["codelabs","syntax highlighting"]
