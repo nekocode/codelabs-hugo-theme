@@ -1,0 +1,11 @@
+# End your baseURL with a `/` trailing slash, e.g. `https://example.com/`.
+baseURL = "https://example.com/"
+
+title = "Codelabs Test"
+languageCode = "zh-CN"
+theme = "codelabs"
+
+[params]
+  homeTitle = "欢迎来到 Codelabs"
+  homeDescription = "这是一个测试网站，用于测试 Codelabs 主题。"
+  # footer = "<a href=\"https://github.com/nekocode/codelabs-hugo-theme\">Source code</a>"
