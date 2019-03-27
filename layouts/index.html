@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="{{ .Site.BaseURL }}google_codelab_index_scss_bin.css">
+  {{- $style := resources.Get "scss/categories.scss" | resources.ExecuteAsTemplate "categories.scss" . | resources.ToCSS -}}
+  <link rel="stylesheet" href="{{ $style.Permalink }}">
   <style>
     body {
       transition: opacity ease-in 0.2s;
@@ -74,7 +76,7 @@
     <footer>
       <div class="footerbar">
         <div class="site-width">
-          {{ .Site.Params.footer }}
+          {{ .Site.Params.footer | safeHTML }}
         </div>
       </div>
     </footer>

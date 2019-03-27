@@ -1,0 +1,15 @@
+@mixin colorize-card($name, $color, $icon:false) {
+  .#{$name}-bg {
+    background-color: $color !important;
+  }
+
+  google-codelab-index-cards .card.#{$name}-bottom {
+    border-bottom-color: $color;
+  }
+}
+
+{{ if .Site.Params.categoryColors -}}
+{{ range $category, $color := .Site.Params.categoryColors -}}
+@include colorize-card('{{ $category }}', {{ $color }});
+{{ end -}}
+{{ end -}}
