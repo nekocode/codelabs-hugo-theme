@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>{{ .Title }}</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="{{ .Site.BaseURL }}google_codelab_step_scss_bin.css">
+  <link rel="stylesheet" href="{{ .Site.BaseURL }}google_codelab_survey_scss_bin.css">
+  <link rel="stylesheet" href="{{ .Site.BaseURL }}google_codelab_scss_bin.css">
+  <style>
+    body {
+      transition: opacity ease-in 0.2s;
+    }
+
+    body[unresolved] {
+      opacity: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+
+<body unresolved>
+  <google-codelab title="{{ .Title }}" environment="web" {{ if .Site.Params.feedbackLink }}feedback-link="{{ .Site.Params.feedbackLink }}"{{ end }}>
+
+{{ .Content }}
+
+  </google-codelab>
+  <script src="{{ .Site.BaseURL }}native-shim.js"></script>
+  <script src="{{ .Site.BaseURL }}custom-elements.min.js"></script>
+  <script src="{{ .Site.BaseURL }}prettify.js"></script>
+  <script src="{{ .Site.BaseURL }}google_codelab_step_bin.js"></script>
+  <script src="{{ .Site.BaseURL }}google_codelab_survey_bin.js"></script>
+  <script src="{{ .Site.BaseURL }}google_codelab_bin.js"></script>
+</body>
+
+</html>
