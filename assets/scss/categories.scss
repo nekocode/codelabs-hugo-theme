@@ -8,8 +8,6 @@
   }
 }
 
-{{ if .Site.Params.categoryColors -}}
 {{ range $category, $color := .Site.Params.categoryColors -}}
 @include colorize-card('{{ $category }}', {{ $color }});
-{{ end -}}
 {{ end -}}
