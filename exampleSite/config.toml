@@ -7,7 +7,13 @@ theme = "codelabs"
 
 [params]
   homeTitle = "Do more with Ubuntu!"
-  homeDescription = "Ubuntu Tutorials are project-based, step-by-step guides to doing amazing things with Ubuntu. From installing the OS in the first place to packaging your first snap, we're here to help you on your way."
+  homeDescription = """
+**Ubuntu Tutorials** are project-based, step-by-step guides to doing amazing things with Ubuntu. From installing the OS in the first place to packaging your first snap, we're here to help you on your way.
+
+This site is open source and open to contributions from the Linux community, if you have a knack for writing and sharing your knowledge, you can [read our guide](#) to get started.
+
+If you'd like to see a tutorial written on a specific topic, [let us know](#).
+"""
   footer = "<a href=\"https://github.com/nekocode/codelabs-hugo-theme\">❤ Source code</a>"
   feedbackLink = "mailto:nekocode.cn@gmail.com"
   [params.categoryColors]

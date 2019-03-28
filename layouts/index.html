@@ -46,7 +46,7 @@
       <div class="site-width">
         <h2>{{ .Site.Params.homeTitle }}</h2>
         {{ if .Site.Params.homeDescription -}}
-        <p>{{ .Site.Params.homeDescription }}</p>
+        <p>{{ .Site.Params.homeDescription | markdownify }}</p>
         {{ end -}}
       </div>
     </header>
