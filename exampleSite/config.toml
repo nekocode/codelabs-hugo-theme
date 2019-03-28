@@ -1,14 +1,14 @@
 # End your baseURL with a `/` trailing slash, e.g. `https://example.com/`.
 baseURL = "https://example.com/"
 
-title = "Codelabs Test"
-languageCode = "zh-CN"
+title = "Ubuntu Tutorials"
+languageCode = "en-us"
 theme = "codelabs"
 
 [params]
-  homeTitle = "欢迎来到 Codelabs"
-  homeDescription = "这是一个测试网站，用于测试 Codelabs 主题。"
-  footer = "<a href=\"https://github.com/nekocode/codelabs-hugo-theme\">Source code</a>"
+  homeTitle = "Do more with Ubuntu!"
+  homeDescription = "Ubuntu Tutorials are project-based, step-by-step guides to doing amazing things with Ubuntu. From installing the OS in the first place to packaging your first snap, we're here to help you on your way."
+  footer = "<a href=\"https://github.com/nekocode/codelabs-hugo-theme\">❤ Source code</a>"
   feedbackLink = "mailto:nekocode.cn@gmail.com"
   [params.categoryColors]
     desktop = "#1A73E8"
