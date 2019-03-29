@@ -25,7 +25,7 @@
 </head>
 
 <body unresolved>
-  <google-codelab title="{{ .Title }}" id="{{ .Title | urlize }}" environment="web" {{ if .Site.Params.feedbackLink }}feedback-link="{{ .Site.Params.feedbackLink }}"{{ end }}>
+  <google-codelab title="{{ .Title }}" id="{{ .Title | urlize }}" environment="web" {{ if .Site.Params.feedbackLink }}feedback-link="{{ .Site.Params.feedbackLink }}"{{ end }} home-url="{{ .Site.BaseURL }}">
 
 {{ .Content }}
 
