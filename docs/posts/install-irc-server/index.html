@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Learn how to install, configure and run the fantastic InspIRCd IRC server.</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_scss_bin.css">
+  <style>
+    body {
+      transition: opacity ease-in 0.2s;
+    }
+
+    body[unresolved] {
+      opacity: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+
+<body unresolved>
+  <google-codelab title="Learn how to install, configure and run the fantastic InspIRCd IRC server." id="learn-how-to-install-configure-and-run-the-fantastic-inspircd-irc-server." environment="web" feedback-link="mailto:nekocode.cn@gmail.com" home-url="https://nekocode.cn/codelabs-hugo-theme/">
+
+<google-codelab-step label="Run your own IRC server" duration="2:00">
+<p>Despite modern alternatives like Slack, the ancient <em>[IRC][irc-info]</em> is still hugely popular as an online interactive chat platform.</p>
+
+<p>This may be because there are IRC clients for almost every operating system and device, from the Commodore Amiga to your smartphone, and the technology behind IRC is reassuringly simplistic - it really is just raw text and a few control characters being bumped around the network.</p>
+
+<p>Online servers, such as those offered by [Freenode][freenode], are wonderful for both public and private channels. But it&rsquo;s equally easy to run your own private IRC server, giving you complete control over your data, logs and configuration settings whilst avoiding all the risks and frustrations of dealing with IRC spammers and bots.</p>
+
+<p>In this tutorial, we&rsquo;ll cover installing the [InspIRCd][inspircd] IRC server on Ubuntu, from installing its dependencies and building the latest version from GitHub, to configuration and execution.</p>
+
+<h3 id="what-you-ll-learn">What you&rsquo;ll learn</h3>
+
+<ul>
+<li>How to prepare your environment for the installation of InspIRCd</li>
+<li>How to build and install InspIRCd from GitHub</li>
+<li>How to start your first InspIRCd server</li>
+<li>How to configure InspIRCd</li>
+</ul>
+
+<h3 id="what-you-ll-need">What you&rsquo;ll need</h3>
+
+<ul>
+<li>A computer running Ubuntu 16.04 LTS (Xenial) or later</li>
+<li>A network connection</li>
+</ul>
+
+<blockquote>
+<p>This tutorial is recommended for users who are comfortable using the terminal.</p>
+</blockquote>
+
+</google-codelab-step>
+
+<google-codelab-step label="Dependencies" duration="3:00">
+<p>For the first step, we&rsquo;ll install the dependencies needed to build and run InspIRCd, starting with <em>git</em>:</p>
+
+<pre><code class="language-bash">sudo apt-get install git
+</code></pre>
+
+<p>Next is <em>Perl</em> so we can run the configuration script included with InspIRCd:</p>
+
+<pre><code class="language-bash">sudo apt-get install perl
+sudo apt-get install g++
+</code></pre>
+
+<p>And finally we need to make sure that <em>make</em> is installed:</p>
+
+<pre><code class="language-bash">sudo apt-get install make
+</code></pre>
+
+</google-codelab-step>
+
+<google-codelab-step label="Download source" duration="3:00">
+<p>The latest version of InspIRCd can be downloaded from:
+<a href="https://github.com/inspircd/inspircd/releases/latest">https://github.com/inspircd/inspircd/releases/latest</a></p>
+
+<p>As we&rsquo;re going to be building the latest version from the source code, we need to grab the <em>tar.gz</em> archive either with your browser or from the command line. To take version <code>2.0.25</code> as an example, you could use the following command to download the archive:</p>
+
+<pre><code class="language-bash">wget https://github.com/inspircd/inspircd/archive/v2.0.25.tar.gz
+</code></pre>
+
+<p>Use <em>tar</em> to extract the download:</p>
+
+<pre><code class="language-bash">tar xvf ./v2.0.25.tar.gz
+</code></pre>
+
+</google-codelab-step>
+
+<google-codelab-step label="Build configuration" duration="5:00">
+<p>With the source code downloaded and extracted, we can now configure how we want InspIRCd built.</p>
+
+<p>First, enter the installation directory:</p>
+
+<pre><code class="language-bash">cd inspircd-2.0.25
+</code></pre>
+
+<blockquote>
+<p>The version number above needs to correspond with your downloaded version.</p>
+</blockquote>
+
+<p>To begin configuring the installation, enter the following:</p>
+
+<pre><code class="language-bash">perl ./configure
+</code></pre>
+
+<p>You are now asked a series of questions. When unsure, press <em>return</em> to answer with the default values.</p>
+
+<p>The final question will ask whether you&rsquo;d like to check for updates to third-party modules, and you should answer <code>y</code> for yes.</p>
+
+<p>The final output should be similar to the following:</p>
+
+<pre><code class="language-no-output">Ok, 144 modules.
+Writing inspircd_config.h
+Writing GNUmakefile ...
+Writing BSDmakefile ...
+Writing inspircd ...
+Writing cache file for future ./configures ...
+
+
+To build your server with these settings, please run 'make' now.
+*** Remember to edit your configuration files!!! ***
+</code></pre>
+
+<p>We can now proceed with the <em>build</em> step.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Build the server" duration="15:00">
+<p>The server can now be built by executing <code>make</code> in the installation directory. This process will take around 10 minutes, depending on your system speed, so feel free to step away from the computer.</p>
+
+<p>With that complete, type <code>make install</code> to move the executable files into the locations configured earlier. An overview of this process is output upon completion:</p>
+
+<pre><code class="language-no-highlight">*************************************
+*       BUILDING INSPIRCD           *
+*                                   *
+*   This will take a *long* time.   *
+*     Why not read our wiki at      *
+*     http://wiki.inspircd.org      *
+*  while you wait for make to run?  *
+*************************************
+
+*************************************
+*        INSTALL COMPLETE!          *
+*************************************
+Paths:
+  Base install: /home/javier/build/inspircd-2.0.25/run
+  Configuration: /home/javier/build/inspircd-2.0.25/run/conf
+  Binaries: /home/javier/build/inspircd-2.0.25/run/bin
+  Modules: /home/javier/build/inspircd-2.0.25/run/modules
+  Data: /home/javier/build/inspircd-2.0.25/run/data
+To start the ircd, run: /home/javier/build/inspircd-2.0.25/run/inspircd start
+Remember to create your config file: /home/javier/build/inspircd-2.0.25/run/conf/inspircd.conf
+Examples are available at: /home/javier/build/inspircd-2.0.25/run/conf/examples/
+</code></pre>
+
+<p>With InspIRCd fully installed, we can configure the server.</p>
+
+<p>We can now proceed with the <em>build</em> step.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Server configuration" duration="10:00">
+<p>From the build directory, create a text file called <code>run/config/inspircd.conf</code> and insert the following:</p>
+
+<pre><code class="language-xml">&lt;config format=&quot;xml&quot;&gt;
+&lt;define name=&quot;bindip&quot; value=&quot;1.2.2.3&quot;&gt;
+&lt;define name=&quot;localips&quot; value=&quot;&amp;bindip;/24&quot;&gt;
+
+####### SERVER CONFIGURATION #######
+
+&lt;server
+        name=&quot;SERVER_HOSTNAME/FQDN&quot;
+        description=&quot;SERVER_DESCRIPTION&quot;
+        id=&quot;SERVER_SID&quot;
+        network=&quot;NETWORK_NAME&quot;&gt;
+
+
+####### ADMIN INFO #######
+
+&lt;admin
+       name=&quot;ADMIN_NAME&quot;
+       nick=&quot;ADMIN_NICK&quot;
+       email=&quot;ADMIN_EMAIL&quot;&gt;
+
+####### PORT CONFIGURATION #######
+
+&lt;bind
+      address=&quot;SERVER_IP&quot;
+      port=&quot;SERVER_PORT&quot;
+      type=&quot;SERVER_TYPE&quot;&gt;
+</code></pre>
+
+<p>Change the following values in the above text to reflect your own configuration:</p>
+
+<ul>
+<li><em>SERVER_HOSTNAME/FQDN</em>: Hostname for the server</li>
+<li><em>SERVER_DESCRIPTION</em>: A description for your server</li>
+<li><em>SERVER_SID</em>: A unique sequence of 3 characters, the first being a number (make sure to capitalise)</li>
+<li><em>NETWORK_NAME</em>: The name of your IRC network</li>
+<li><em>ADNIN_NAME</em>: IRC <em>admin</em> name</li>
+<li><em>ADMIN_NICK</em>: IRC <em>admin</em> nick</li>
+<li><em>ADMIN_EMAIL</em>: IRC <em>admin</em> email</li>
+<li><em>SERVER_IP</em>: Public IP for the server</li>
+<li><em>SERVER_PORT</em>: Server port (usually 6697)</li>
+<li><em>SERVER_TYPE</em>: The clients or servers type (clients should be fine here)</li>
+</ul>
+
+<p>The configuration file should now look something like this:</p>
+
+<pre><code class="language-xml">&lt;config format=&quot;xml&quot;&gt;
+&lt;define name=&quot;bindip&quot; value=&quot;1.2.2.3&quot;&gt;
+&lt;define name=&quot;localips&quot; value=&quot;&amp;bindip;/24&quot;&gt;
+
+####### SERVER CONFIGURATION #######
+
+&lt;server
+        name=&quot;tutorials.ubuntu.com&quot;
+        description=&quot;Welcome to Ubuntu Tutorials&quot;
+        id=&quot;97K&quot;
+        network=&quot;tutorials.ubuntu.com&quot;&gt;
+
+
+####### ADMIN INFO #######
+
+&lt;admin
+       name=&quot;tutorial ubuntu&quot;
+       nick=&quot;tutorial&quot;
+       email=&quot;tutorials@ubuntu.com&quot;&gt;
+
+####### PORT CONFIGURATION #######
+
+&lt;bind
+      address=&quot;23.54.785.654&quot;
+      port=&quot;6697&quot;
+      type=&quot;clients&quot;&gt;
+</code></pre>
+
+<p>Make sure you save your changes!</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Run the server" duration="2:00">
+<p>It&rsquo;s now time to start up InspIRCd for the first time!</p>
+
+<p>In your the terminal window, type:</p>
+
+<pre><code class="language-bash">./inspircd start
+./inspircd status
+</code></pre>
+
+<p>If successful, you will see the following output:</p>
+
+<pre><code class="language-no-highlight">InspIRCd is running (PID: 13301)
+</code></pre>
+
+<p>Congratulations! Your server is now online!</p>
+
+<p>Any IRC client capable of accessing your server will now be able to connect to your IRC server.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Congratulations!" duration="2:00">
+<h3 id="you-now-know-how-to">You now know how to:</h3>
+
+<ul>
+<li>Grab source code from GitHub</li>
+<li>Prepare an environment to build InspIRCd</li>
+<li>Configure InspIRCd using a <code>.conf</code> file</li>
+<li>Start the service</li>
+</ul>
+
+<h3 id="what-s-next">What&rsquo;s Next?</h3>
+
+<ul>
+<li>Modify your external internet connection to forward port 6697</li>
+<li>Ensure your network has a static IP address</li>
+<li>Get a URL to easily send traffic to your server (optional)</li>
+</ul>
+
+<p>Changes to your IRC server need to be made to the config file and a list of supported commands and other useful information can be found at <a href="https://wiki.InspIRCd.org/">InspIRCd&rsquo;s Wiki</a>.</p>
+
+<h3 id="need-help">Need Help?</h3>
+
+<ul>
+<li>Double Check that the port is available</li>
+<li>Ensure the <code>.config</code> file is correct</li>
+<li>Make sure you typed the commands properly</li>
+<li>Try using sudo (if you aren&rsquo;t already)</li>
+<li>Ask a question on <a href="https://askubuntu.com/">Ask Ubuntu</a></li>
+</ul>
+
+<!-- LINKS -->
+</google-codelab-step>
+
+
+  </google-codelab>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/native-shim.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/custom-elements.min.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/prettify.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_bin.js"></script>
+</body>
+
+</html>

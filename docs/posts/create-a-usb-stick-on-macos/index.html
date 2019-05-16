@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>How to write a USB stick with macOS.</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_scss_bin.css">
+  <style>
+    body {
+      transition: opacity ease-in 0.2s;
+    }
+
+    body[unresolved] {
+      opacity: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+
+<body unresolved>
+  <google-codelab title="How to write a USB stick with macOS." id="how-to-write-a-usb-stick-with-macos." environment="web" feedback-link="mailto:nekocode.cn@gmail.com" home-url="https://nekocode.cn/codelabs-hugo-theme/">
+
+<google-codelab-step label="Overview" duration="1:00">
+<p>With a bootable Ubuntu USB stick, you can:</p>
+
+<ul>
+<li>Install or upgrade Ubuntu, even on a Mac</li>
+<li>Test out the Ubuntu desktop experience without touching your PC configuration</li>
+<li>Boot into Ubuntu on a borrowed machine or from an internet cafe</li>
+<li>Use tools installed by default on the USB stick to repair or fix a broken configuration</li>
+</ul>
+
+<p>Creating a bootable USB stick is very simple, especially if you&rsquo;re going to use the USB stick with a generic Windows or Linux PC. We&rsquo;re going to cover the process in the next few steps.</p>
+
+<h3 id="apple-hardware-considerations">Apple hardware considerations</h3>
+
+<p>There are a few additional considerations when booting the USB stick on Apple hardware. This is because Apple&rsquo;s &lsquo;Startup Manager&rsquo;, summoned by holding the Option/alt (⌥) key when booting, won&rsquo;t detect the USB stick without a specific partition table and layout. We&rsquo;ll cover this in a later step.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Prepare the USB stick" duration="5:00">
+<p>To ensure maximum compatibility with Apple hardware, we&rsquo;re going to first blank and reformat the USB stick using Apple&rsquo;s &lsquo;Disk Utility&rsquo;. But this step can be skipped if you intend to use the USB stick with only generic PC hardware.</p>
+
+<ul>
+<li>Launch <em>Disk Utility</em> from Applications&gt;Utilities or Spotlight search</li>
+<li>Insert your USB stick and observe the new device added to Disk Utility</li>
+<li>Select the USB stick device (you may need to enable the option View&gt;Show All Devices) and select <code>Erase</code> from the tool bar (or right-click menu)</li>
+<li>Set the format to <code>MS-DOS (FAT)</code> and the scheme to <code>GUID Partition Map</code></li>
+<li>Check you&rsquo;ve chosen the correct device and click <code>Erase</code></li>
+</ul>
+
+<p><img src="https://assets.ubuntu.com/v1/e0915a12-36187570-fdfeafae-10fa-11e8-8b51-c9377a9b60de.png" alt="screenshot" /></p>
+
+<blockquote>
+<p><strong>Warning:</strong> Disk Utility needs to be used with caution as selecting the wrong device or partition can result in data loss.</p>
+</blockquote>
+
+</google-codelab-step>
+
+<google-codelab-step label="Install and run Etcher" duration="2:00">
+<p>To write the ISO file to the USB stick, we&rsquo;re going to use a free and open source application called [Etcher][etcher]. After downloading this and clicking to mount the package, Etcher can either be run in-place or dragged into your Applications folder.</p>
+
+<p>By default, recent versions of macOS block the running of applications from unidentified developers. To side-step this issue, enable &lsquo;App Store and identified developers&rsquo; in the &lsquo;Security &amp; Privacy&rsquo; pane of System Preferences. If you are still warned against running the application, click &lsquo;Open Anyway&rsquo; in the same pane.</p>
+
+<p><img src="https://assets.ubuntu.com/v1/d8a3ee9d-macos-usb-etcher-run.png" alt="screenshot" /></p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Etcher configuration" duration="2:00">
+<p>Etcher will configure and write to your USB device in three stages, each of which needs to be selected in turn:</p>
+
+<ul>
+<li><p><strong>Select image</strong> will open a file requester from which should navigate to and select the ISO file downloaded previously. By default, the ISO file will be in your <em>Downloads</em> folder.</p></li>
+
+<li><p><strong>Select drive</strong>, replaced by the name of your USB device if one is already attached, lets you select your target device. You will be warned if the storage space is too small for your selected ISO.</p></li>
+
+<li><p><strong>Flash!</strong> will activate when both the image and the drive have been selected. As with Disk Utility, Etcher needs low-level access to your storage hardware and will ask for your password after selection.</p></li>
+</ul>
+
+<p><img src="https://assets.ubuntu.com/v1/48b60ed0-macos-usb-etcher-config.png" alt="screenshot" /></p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Write to device" duration="2:00">
+<p>After entering your password, Etcher will start writing the ISO file to your USB device.</p>
+
+<p>The <em>Flash</em> stage of the process will show progress, writing speed and an estimated duration until completion. This will be followed by a validation stage that will ensure the contents of the USB device are identical to the source image.</p>
+
+<p>When everything has finished, Etcher will declare the process a success.</p>
+
+<p>Congratulations! You now have Ubuntu on a USB stick, bootable and ready to go.</p>
+
+<p><img src="https://assets.ubuntu.com/v1/9e8704ce-macos-usb-etcher-success.png" alt="screenshot" /></p>
+
+<blockquote>
+<dl>
+<dd><strong>Warning:</strong> After the write process has completed, macOS may inform you that &lsquo;The disk you inserted was not readable by this computer&rsquo;. Don&rsquo;t select <em>Initialise</em>. Instead, select <strong><em>Eject</em></strong> and remove the USB device.</dd>
+</dl>
+</blockquote>
+
+</google-codelab-step>
+
+<google-codelab-step label="Boot your Mac" duration="3:00">
+<p>If you want to use your USB stick with an Apple Mac, you will need to restart or power-on the Mac with the USB stick inserted <strong>while</strong> the <code>Option/alt</code> <em>(⌥)</em> key is pressed.</p>
+
+<p>This will launch Apple&rsquo;s &lsquo;Startup Manager&rsquo; which shows bootable devices connected to the machine. Your USB stick should appear as gold/yellow and labelled &lsquo;EFI Boot&rsquo;. Selecting this will lead you to the standard Ubuntu boot menu.</p>
+
+<p><img src="https://assets.ubuntu.com/v1/ee39c875-macos-usb-efi-boot.png" alt="screenshot" /></p>
+
+<h3 id="finding-help">Finding help</h3>
+
+<p>If your Mac still refuses to boot off your USB stick you may find it easier to boot and install off an Ubuntu DVD instead. See our <a href="https://tutorials.ubuntu.com/tutorial/tutorial-burn-a-dvd-on-macos#0">How to burn a DVD on macOS</a> for further details.</p>
+
+<p>Alternatively, if you feel confident using the macOS command line, see the community documentation on <a href="https://help.ubuntu.com/community/How%20to%20install%20Ubuntu%20on%20MacBook%20using%20USB%20Stick">How to install Ubuntu on MacBook using USB Stick</a> for a more manual approach.</p>
+
+<p>If you want to install Ubuntu, follow our <a href="https://tutorials.ubuntu.com/tutorial/tutorial-install-ubuntu-desktop#0">install Ubuntu desktop tutorial</a>.</p>
+
+<p>Finally, if you get stuck, help is always at hand:</p>
+
+<ul>
+<li><a href="https://askubuntu.com/">Ask Ubuntu</a></li>
+<li><a href="https://ubuntuforums.org/">Ubuntu Forums</a></li>
+<li><a href="https://wiki.ubuntu.com/IRC/ChannelList">IRC-based support</a></li>
+</ul>
+
+<!-- LINKS -->
+
+</google-codelab-step>
+
+
+  </google-codelab>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/native-shim.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/custom-elements.min.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/prettify.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_bin.js"></script>
+</body>
+
+</html>

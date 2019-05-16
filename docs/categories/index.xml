@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Ubuntu Tutorials</title>
+    <link>https://nekocode.cn/codelabs-hugo-theme/categories/</link>
+    <description>Recent content in Categories on Ubuntu Tutorials</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nekocode.cn/codelabs-hugo-theme/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>security</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/categories/security/</link>
+      <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/categories/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>server</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/categories/server/</link>
+      <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/categories/server/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>desktop</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/categories/desktop/</link>
+      <pubDate>Fri, 18 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/categories/desktop/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Learn how to create AppArmor profiles to confine your applications.</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_scss_bin.css">
+  <link rel="stylesheet" href="https://nekocode.cn/codelabs-hugo-theme/google_codelab_scss_bin.css">
+  <style>
+    body {
+      transition: opacity ease-in 0.2s;
+    }
+
+    body[unresolved] {
+      opacity: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+
+<body unresolved>
+  <google-codelab title="Learn how to create AppArmor profiles to confine your applications." id="learn-how-to-create-apparmor-profiles-to-confine-your-applications." environment="web" feedback-link="mailto:nekocode.cn@gmail.com" home-url="https://nekocode.cn/codelabs-hugo-theme/">
+
+<google-codelab-step label="Overview">
+<p>AppArmor is a Mandatory Access Control (MAC) system which confines programs to a limited set of resources. AppArmor confinement is provided via profiles loaded into the kernel. AppArmor can be set to either enforce the profile or complain when profile rules are violated.</p>
+
+<p>For this tutorial, we will generate an AppArmor profile for certspotter. certspotter is a new utility in Ubuntu as of 17.10 and no profile yet exists. certspotter monitors certificate transparency logs to see if new certificates have been generated for domains listed in a watchlist. Users of certspotter are encouraged to set up a cron job to regularly monitor new entries. I want to use this useful utility, but I haven&rsquo;t had a chance to browse the source code, so I want to limit what it can do on my system.</p>
+
+<h3 id="what-you-ll-learn">What you&rsquo;ll learn</h3>
+
+<ul>
+<li>How to create an AppArmor profile</li>
+</ul>
+
+<h3 id="what-you-ll-need">What you&rsquo;ll need</h3>
+
+<ul>
+<li>Ubuntu 17.10 or Ubuntu 18.04 LTS</li>
+</ul>
+
+<p>Ready? Let&rsquo;s get started!</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Introduction to AppArmor Profiles">
+<p>AppArmor profiles are simple text files. Absolute paths as well as file globbing can be used when specifying file access. Most file access rules specify the type of access which is allowed: &lsquo;r&rsquo; (read), &lsquo;w&rsquo; (write), &rsquo;m&rsquo; (memory map as executable), &lsquo;k&rsquo; (file locking), &lsquo;l&rsquo; (creation hard links), and &lsquo;ix&rsquo; to execute another program with the new program inheriting policy. Other file access rules also exist such as &lsquo;Px&rsquo; (execute under another profile, after cleaning the environment), &lsquo;Cx&rsquo; (execute under a child profile, after cleaning the environment), and &lsquo;Ux&rsquo; (execute unconfined, after cleaning the environment).</p>
+
+<p>AppArmor supports access controls for:
+* files
+* Linux capabilities
+* network
+* mount, remount and umount
+* pivot_root
+* ptrace
+* signal
+* DBus
+* unix domain sockets</p>
+
+<p>In addition:
+* variables (eg <code>@{HOME}</code> can be defined and manipulated outside the profile (<code>#include &lt;tunables/global&gt;</code> for <code>@{PROC}</code> and <code>@{HOME}</code>)
+* explicit deny rules are supported to override allow rules (eg access to <code>@{HOME}/bin/bad.sh</code> is denied with auditing due to <code>audit deny @{HOME}/bin/** mrwkl,</code> even though general access to <code>@{HOME}</code> is permitted with <code>@{HOME}/** rw,</code>)
+* include files are supported to ease development and simplify profiles (ie <code>#include &lt;abstractions/base&gt;</code>, <code>#include &lt;abstractions/nameservice&gt;</code>, <code>#include &lt;abstractions/user-tmp&gt;</code>)</p>
+
+<p>To get started, let&rsquo;s install some useful AppArmor utilities and the application that we want to confine:</p>
+
+<pre><code class="language-bash">sudo apt install apparmor-easyprof apparmor-notify apparmor-utils certspotter
+</code></pre>
+
+</google-codelab-step>
+
+<google-codelab-step label="Generating a basic profile">
+<p>The easiest way to get started is to create a skeleton profile, set AppArmor to complain mode for your target and then use the <code>aa-logprof</code> tool to evaluate the denials.</p>
+
+<p>We&rsquo;ll use <code>aa-easyprof</code> to generate the skeleton policy; let&rsquo;s see what it generates (be sure to specify the absolute path to the application):</p>
+
+<pre><code class="language-bash">$ aa-easyprof /usr/bin/certspotter
+</code></pre>
+
+<pre><code># vim:syntax=apparmor
+# AppArmor policy for certspotter
+# ###AUTHOR###
+# ###COPYRIGHT###
+# ###COMMENT###
+
+#include &lt;tunables/global&gt;
+
+# No template variables specified
+
+&quot;/usr/bin/certspotter&quot; {
+#include &lt;abstractions/base&gt;
+
+# No abstractions specified
+
+# No policy groups specified
+
+# No read paths specified
+
+# No write paths specified
+}
+</code></pre>
+
+<p>Looks pretty basic, so let&rsquo;s write that output into the profile file (the name of the file can be anything; it is the contents of the file which matter):</p>
+
+<pre><code class="language-bash">$ aa-easyprof /usr/bin/certspotter &gt; usr.bin.certspotter
+$ sudo mv usr.bin.certspotter /etc/apparmor.d
+</code></pre>
+
+<p>and then load the profile into the kernel:</p>
+
+<pre><code class="language-bash">$ sudo apparmor_parser -r /etc/apparmor.d/usr.bin.certspotter
+</code></pre>
+
+<p>Trying to run certspotter, results in an immediate (safe) crash.</p>
+
+<pre><code class="language-bash">$ certspotter
+certspotter: /home/testuser/.certspotter/watchlist: open /home/testuser/.certspotter/watchlist permission denied
+</code></pre>
+
+<p>This basic profile doesn&rsquo;t allow certspotter access to resources it needs, so let&rsquo;s look at the AppArmor denial messages to see what went wrong.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="AppArmor Denials and Complain Mode">
+<p>AppArmor denials are logged to <code>/var/log/syslog</code> (or <code>/var/log/audit/audit.log</code> for non-DBus policy violations if auditd is installed). The kernel will rate limit AppArmor denials which can cause problems while profiling. You can avoid this by installing auditd or by adjusting rate limiting in the kernel:</p>
+
+<pre><code class="language-bash">$ sudo sysctl -w kernel.printk_ratelimit=0
+</code></pre>
+
+<p>Another way to to view AppArmor denials is by using the aa-notify tool. aa-notify is a very simple program that will report any new AppArmor denials by consulting <code>/var/log/syslog</code> (or <code>/var/log/audit/audit.log</code> if auditd is installed). For example,</p>
+
+<pre><code class="language-bash">$ /usr/bin/aa-notify -s 1 -v
+</code></pre>
+
+<p>will show any AppArmor denials within the last day.</p>
+
+<p>We are going to take the easy route to develop this profile and use the <code>aa-logprof</code> tool to evaluate the log entries that AppArmor makes in complain mode, so let&rsquo;s set the AppArmor profile for certspotter to complain mode for this policy so that we can see what is happening.</p>
+
+<pre><code class="language-bash">$ sudo aa-complain certspotter
+</code></pre>
+
+<p>Now let&rsquo;s try running certspotter again:</p>
+
+<pre><code class="language-bash">$ certspotter
+</code></pre>
+
+<p>It immediately starts generating AppArmor entries in the logs that look like this:</p>
+
+<pre><code>Feb 23 13:34:24 tutorials audit[18643]: AVC apparmor=&quot;ALLOWED&quot; operation=&quot;recvmsg&quot; profile=&quot;/usr/bin/certspotter&quot; pid=18643 comm=&quot;certspotter&quot; laddr=10.0.2.15 lport=46314 faddr=10.0.2.16 fport=443 family=&quot;inet&quot; sock_type=&quot;stream&quot; protocol=6 requested_mast=&quot;receive&quot; denied_mask=&quot;receive&quot;
+</code></pre>
+
+<p>because we haven&rsquo;t yet created the profile rules to allow it to access the network.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Using aa-logprof to Refine the Profile">
+<p>The <code>aa-logprof</code> tool will parse the AppArmor messages and suggest policy rules which would permit certspotter to run under confinement.</p>
+
+<pre><code class="language-bash">$ sudo aa-logprof
+</code></pre>
+
+<pre><code>Reading log entries from /var/log/syslog.
+Updating AppArmor profiles in /etc/apparmor.d.
+Complain-mode changes:
+
+Profile: /usr/bin/certspotter
+Path: /proc/sys/net/core/somaxconn
+New Mode: r
+Severity: 6
+
+[1 - /proc/sys/net/core/somaxconn r,]
+(A)llow / [(D)eny] / (I)gnore / (G)lob / Glob with (E)xtension / (N) ew / Audi(t) / Abo(r)t / (F)inish
+
+A
+</code></pre>
+
+<p>There is no problem with letting certspotter read this file which specifies the maximum number of open socket connections, so we type A to allow it.</p>
+
+<pre><code>Profile: /usr/bin/certspotter
+Path: /etc/nsswitch.conf
+New Mode: r
+Severity: unknown
+
+[1 - #include &lt;abstractions/nameservice&gt;]
+2 - /etc/nsswitch.conf r,
+(A)llow / [(D)eny] / (I)gnore / (G)lob / Glob with (E)xtension / (N) ew / Audi(t) / Abo(r)t / (F)inish
+
+A
+</code></pre>
+
+<p>certspotter uses the network to retrieve information from the certificate transparency logs. We have the choice to either specifically allow this first network related access or to use the existing nameservice abstraction which grants common access patterns. You can review the details of the abstraction in <code>/etc/apparmor.d/abstractions/nameservice</code>. This access pattern makes sense for certspotter, so let&rsquo;s allow it.</p>
+
+<pre><code>Profile: /usr/bin/certspotter
+Path: /proc/sys/kernel/hostname
+New Mode: r
+Severity: 6
+
+[1 - /proc/sys/kernel/hostname r,]
+(A)llow / [(D)eny] / (I)gnore / (G)lob / Glob with (E)xtension / (N) ew / Audi(t) / Abo(r)t / (F)inish
+
+A
+</code></pre>
+
+<p>We don&rsquo;t have a problem with certspotter knowing the system&rsquo;s hostname, so let&rsquo;s Allow it.</p>
+
+<pre><code>Profile: /usr/bin/certspotter
+Path: /home/testuser/.certspotter/watchlist
+New Mode: r
+Severity: 4
+
+[1 - /home/*/.certspotter/watchlist r,]
+2 - /home/testuser/.certspotter/watchlist r,
+(A)llow / [(D)eny] / (I)gnore / (G)lob / Glob with (E)xtension / (N) ew / Audi(t) / Abo(r)t / (F)inish
+
+A
+</code></pre>
+
+<p>certspotter reads the watchlist to determine which domains to monitor. We want certspotter to work for all users of the system and not just ourselves, so suggested rule 1 is better than rule 2. However we also know that certspotter uses the <code>.certspotter</code> directory to write information that it discovers, its lock file and other data, so this &lsquo;r&rsquo; rule will be insufficient. Additionally, we would prefer to use the <code>@{HOME}</code> tunable rather than the globbed path. For now, let&rsquo;s accept it as a placeholder and take a TODO to touch it up later.</p>
+
+<pre><code>Profile: /usr/bin/certspotter
+Path: /home/testuser/.certspotter/version
+New Mode: r
+Severity: 4
+
+[1 - /home/*/.certspotter/version r,]
+2 - /home/testuser/.certspotter/version r,
+(A)llow / [(D)eny] / (I)gnore / (G)lob / Glob with (E)xtension / (N) ew / Audi(t) / Abo(r)t / (F)inish
+I
+</code></pre>
+
+<p>When we touch up the watchlist rule, we should cover all of these entries about files in <code>$HOME/.certspotter</code>, so we will Ignore these suggested rules for now.</p>
+
+<p><rule suggestions for other files in $HOME/.certspotter omitted></p>
+
+<pre><code>Enforce-mode changes:
+
+= Change Local Profiles =
+The following local profiles were changed. Would you like to save them?
+
+[1 - /usr/bin/certspotter]
+(S)ave Changes / Save Selec(t)ed Profile / [(V)iew Changes] / View Change b/w (C)lean profiles / Abo(r)t
+S
+</code></pre>
+
+<p>When you Save the profile, <code>aa-logprof</code> automatically causes the profile to be reloaded which immediately silences all of the AppArmor messages about certspotter using the network.</p>
+
+</google-codelab-step>
+
+<google-codelab-step label="Hand Editing the Profile">
+<p>Let&rsquo;s go back and touch up the profile to allow certspotter to read and write from the <code>$HOME/.certspotter</code> directory.</p>
+
+<pre><code class="language-bash">$ sudo vi /etc/apparmor.d/usr.bin.certspotter
+</code></pre>
+
+<p>let&rsquo;s change the <code>/home/*/.certspotter/watchlist r,</code> line to <code>owner @{HOME}/.certspotter/** rw,</code>. The <code>**</code> glob means certspotter can now read and write to all files, directories and all paths under the current user&rsquo;s <code>.certspotter</code> directory in their home directory. You can take this opportunity to touch up the <code>###AUTHOR###</code>, <code>###COPYRIGHT###</code>, and <code>###COMMENT###</code> placeholders with your preferred information. Reload the policy once again:</p>
+
+<pre><code class="language-bash">$ sudo apparmor_parser -r /etc/apparmor.d/usr.bin.certspotter
+</code></pre>
+
+</google-codelab-step>
+
+<google-codelab-step label="AppArmor deny rules">
+<p>We&rsquo;re feeling especially paranoid today, so we are going to add in a few rules to ensure that certspotter can&rsquo;t exfiltrate some of the data from <code>$HOME</code>. While AppArmor profiles are default-deny by default, adding explicit deny rules can guard against profile mistakes:</p>
+
+<pre><code>deny @{HOME}/Documents/ rw,
+deny @{HOME}/Private/ rw,
+deny @{HOME}/Pictures/ rw,
+deny @{HOME}/Videos/ rw,
+deny @{HOME}/fake/ rw,
+deny @{HOME}/.config/ rw,
+deny @{HOME}/.ssh/ rw,
+deny @{HOME}/.bashrc rw,
+</code></pre>
+
+<p>The fake directory doesn&rsquo;t exist on this system, but the policy rule is still valid and AppArmor will enforce rules on it if it ever gets created someday. Remember when specifying a directory itself to use the trailing &lsquo;/&rsquo;; this is how AppArmor tells the difference between a file and a directory.</p>
+
+<p>Don&rsquo;t forget to reload the policy!</p>
+
+<pre><code class="language-bash">$ sudo apparmor_parser -r /etc/apparmor.d/usr.bin.certspotter
+</code></pre>
+
+<p>Ok, let&rsquo;s restart certspotter and see if it works:</p>
+
+<pre><code class="language-bash">$ /usr/bin/certspotter
+</code></pre>
+
+<p>It seems to be working with no new denials being generated, so let&rsquo;s take AppArmor out of complain mode for this profile and set it to enforcing:</p>
+
+<pre><code class="language-bash">$ sudo aa-enforce certspotter
+</code></pre>
+
+</google-codelab-step>
+
+<google-codelab-step label="That&#39;s it!">
+<p>And that&rsquo;s it! You have generated your first AppArmor profile. You should probably ask someone else to review the final profile to make sure that privilege hasn&rsquo;t been over granted. Hop into #apparmor on OFTC to ask questions. Submit a pull request to add your profile into the extras directory in the <a href="https://gitlab.com/apparmor/apparmor/tree/master/profiles/apparmor/profiles/extras">AppArmor project on Gitlab</a> so that other AppArmor users benefit from your work.</p>
+
+<h3 id="further-reading">Further reading</h3>
+
+<p>For more details about AppArmor profile rules and AppArmor utilities, see the AppArmor man pages
+- <a href="http://manpages.ubuntu.com/manpages/bionic/en/man5/apparmor.d.5.html">man 5 apparmor.d</a>
+- <a href="http://manpages.ubuntu.com/manpages/bionic/en/man8/aa-notify.8.html">man 8 aa-notify</a>
+- <a href="http://manpages.ubuntu.com/manpages/bionic/en/man7/apparmor.7.html">man 7 apparmor</a></p>
+
+<p>For detailed information, check out the <a href="https://gitlab.com/apparmor/apparmor/wikis/home">AppArmor Wiki</a> especially the <a href="https://gitlab.com/apparmor/apparmor/wikis/AppArmorPolicy">Policy page</a></p>
+
+<p>For more description of AppArmor profile development see <a href="https://penguindroppings.wordpress.com/2013/01/11/application-isolation-with-apparmor-part-i/">Application isolation with AppArmor</a></p>
+
+<p>For more information about certspotter, see <a href="https://sslmate.com/certspotter/">CertSpotter</a></p>
+
+</google-codelab-step>
+
+
+  </google-codelab>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/native-shim.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/custom-elements.min.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/prettify.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_step_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_survey_bin.js"></script>
+  <script src="https://nekocode.cn/codelabs-hugo-theme/google_codelab_bin.js"></script>
+</body>
+
+</html>

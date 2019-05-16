@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>irc on Ubuntu Tutorials</title>
+    <link>https://nekocode.cn/codelabs-hugo-theme/tags/irc/</link>
+    <description>Recent content in irc on Ubuntu Tutorials</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nekocode.cn/codelabs-hugo-theme/tags/irc/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learn how to install, configure and run the fantastic InspIRCd IRC server.</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/install-irc-server/</link>
+      <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/install-irc-server/</guid>
+      <description>Despite modern alternatives like Slack, the ancient [IRC][irc-info] is still hugely popular as an online interactive chat platform.
+This may be because there are IRC clients for almost every operating system and device, from the Commodore Amiga to your smartphone, and the technology behind IRC is reassuringly simplistic - it really is just raw text and a few control characters being bumped around the network.
+Online servers, such as those offered by [Freenode][freenode], are wonderful for both public and private channels.</description>
+    </item>
+    
+  </channel>
+</rss>

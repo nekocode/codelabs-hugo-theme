@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Ubuntu Tutorials</title>
+    <link>https://nekocode.cn/codelabs-hugo-theme/posts/</link>
+    <description>Recent content in Posts on Ubuntu Tutorials</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nekocode.cn/codelabs-hugo-theme/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learn how to create AppArmor profiles to confine your applications.</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/beginning-apparmor-profile-development/</link>
+      <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/beginning-apparmor-profile-development/</guid>
+      <description>AppArmor is a Mandatory Access Control (MAC) system which confines programs to a limited set of resources. AppArmor confinement is provided via profiles loaded into the kernel. AppArmor can be set to either enforce the profile or complain when profile rules are violated.
+For this tutorial, we will generate an AppArmor profile for certspotter. certspotter is a new utility in Ubuntu as of 17.10 and no profile yet exists. certspotter monitors certificate transparency logs to see if new certificates have been generated for domains listed in a watchlist.</description>
+    </item>
+    
+    <item>
+      <title>Learn how to install, configure and run the fantastic InspIRCd IRC server.</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/install-irc-server/</link>
+      <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/install-irc-server/</guid>
+      <description>Despite modern alternatives like Slack, the ancient [IRC][irc-info] is still hugely popular as an online interactive chat platform.
+This may be because there are IRC clients for almost every operating system and device, from the Commodore Amiga to your smartphone, and the technology behind IRC is reassuringly simplistic - it really is just raw text and a few control characters being bumped around the network.
+Online servers, such as those offered by [Freenode][freenode], are wonderful for both public and private channels.</description>
+    </item>
+    
+    <item>
+      <title>How to write a USB stick with macOS.</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/create-a-usb-stick-on-macos/</link>
+      <pubDate>Fri, 18 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/create-a-usb-stick-on-macos/</guid>
+      <description>With a bootable Ubuntu USB stick, you can:
+ Install or upgrade Ubuntu, even on a Mac Test out the Ubuntu desktop experience without touching your PC configuration Boot into Ubuntu on a borrowed machine or from an internet cafe Use tools installed by default on the USB stick to repair or fix a broken configuration  Creating a bootable USB stick is very simple, especially if you&amp;rsquo;re going to use the USB stick with a generic Windows or Linux PC.</description>
+    </item>
+    
+    <item>
+      <title>Instructions on how to burn an Ubuntu installation DVD on macOS</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/burn-a-dvd-on-macos/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/burn-a-dvd-on-macos/</guid>
+      <description>To create an Ubuntu installation DVD on macOS, you will need the following:
+ An Ubuntu ISO file. Download the Ubuntu of your choice from here A blank DVD   Ensuring the authenticity of an Ubuntu ISO
+The download can be verified to ensure the data integrity and authenticity of the file.
+  The easiest way to burn an Ubuntu ISO &amp;ndash; the file you just downloaded &amp;ndash; on a DVD, is by right clicking on the file in the Finder.</description>
+    </item>
+    
+  </channel>
+</rss>

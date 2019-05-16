@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dvd on Ubuntu Tutorials</title>
+    <link>https://nekocode.cn/codelabs-hugo-theme/tags/dvd/</link>
+    <description>Recent content in dvd on Ubuntu Tutorials</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://nekocode.cn/codelabs-hugo-theme/tags/dvd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Instructions on how to burn an Ubuntu installation DVD on macOS</title>
+      <link>https://nekocode.cn/codelabs-hugo-theme/posts/burn-a-dvd-on-macos/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nekocode.cn/codelabs-hugo-theme/posts/burn-a-dvd-on-macos/</guid>
+      <description>To create an Ubuntu installation DVD on macOS, you will need the following:
+ An Ubuntu ISO file. Download the Ubuntu of your choice from here A blank DVD   Ensuring the authenticity of an Ubuntu ISO
+The download can be verified to ensure the data integrity and authenticity of the file.
+  The easiest way to burn an Ubuntu ISO &amp;ndash; the file you just downloaded &amp;ndash; on a DVD, is by right clicking on the file in the Finder.</description>
+    </item>
+    
+  </channel>
+</rss>
