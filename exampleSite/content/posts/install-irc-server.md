@@ -6,7 +6,7 @@ tags: [irc, InspIRCd, chat, server, guide, tutorial, hidden]
 duration: 42:00
 ---
 
-{{% step label="Run your own IRC server" duration="2:00" %}}
+{{< step label="Run your own IRC server" duration="2:00" >}}
 
 Despite modern alternatives like Slack, the ancient *[IRC][irc-info]* is still hugely popular as an online interactive chat platform. 
 
@@ -31,10 +31,10 @@ In this tutorial, we'll cover installing the [InspIRCd][inspircd] IRC server on 
 
 > This tutorial is recommended for users who are comfortable using the terminal.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Dependencies" duration="3:00" %}}
+{{< step label="Dependencies" duration="3:00" >}}
 
 For the first step, we'll install the dependencies needed to build and run InspIRCd, starting with *git*:
 
@@ -55,10 +55,10 @@ And finally we need to make sure that *make* is installed:
 sudo apt-get install make
 ```
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Download source" duration="3:00" %}}
+{{< step label="Download source" duration="3:00" >}}
 
 The latest version of InspIRCd can be downloaded from:
 [https://github.com/inspircd/inspircd/releases/latest](https://github.com/inspircd/inspircd/releases/latest)
@@ -75,10 +75,10 @@ Use *tar* to extract the download:
 tar xvf ./v2.0.25.tar.gz
 ```
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Build configuration" duration="5:00" %}}
+{{< step label="Build configuration" duration="5:00" >}}
 
 With the source code downloaded and extracted, we can now configure how we want InspIRCd built.
 
@@ -117,10 +117,10 @@ To build your server with these settings, please run 'make' now.
 
 We can now proceed with the *build* step.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Build the server" duration="15:00" %}}
+{{< step label="Build the server" duration="15:00" >}}
 
 The server can now be built by executing `make` in the installation directory. This process will take around 10 minutes, depending on your system speed, so feel free to step away from the computer.
 
@@ -154,10 +154,10 @@ With InspIRCd fully installed, we can configure the server.
 
 We can now proceed with the *build* step.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Server configuration" duration="10:00" %}}
+{{< step label="Server configuration" duration="10:00" >}}
 
 From the build directory, create a text file called `run/config/inspircd.conf` and insert the following:
 
@@ -236,11 +236,11 @@ The configuration file should now look something like this:
 
 Make sure you save your changes!
 
-{{% /step %}}
+{{< /step >}}
 
 
 
-{{% step label="Run the server" duration="2:00" %}}
+{{< step label="Run the server" duration="2:00" >}}
 
 It's now time to start up InspIRCd for the first time!
 
@@ -261,10 +261,10 @@ Congratulations! Your server is now online!
 
 Any IRC client capable of accessing your server will now be able to connect to your IRC server.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Congratulations!" duration="2:00" %}}
+{{< step label="Congratulations!" duration="2:00" >}}
 
 ### You now know how to:
 
@@ -296,4 +296,4 @@ Changes to your IRC server need to be made to the config file and a list of supp
 [inspircd]: http://www.inspircd.org/
 [ask-ubuntu]: https://askubuntu.com/
 
-{{% /step %}}
+{{< /step >}}

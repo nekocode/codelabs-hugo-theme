@@ -6,7 +6,7 @@ tags: [tutorial, apparmor, guide, security, policy]
 duration: 12:00
 ---
 
-{{% step label="Overview" %}}
+{{< step label="Overview" >}}
 
 AppArmor is a Mandatory Access Control (MAC) system which confines programs to a limited set of resources. AppArmor confinement is provided via profiles loaded into the kernel. AppArmor can be set to either enforce the profile or complain when profile rules are violated.
 
@@ -23,10 +23,10 @@ For this tutorial, we will generate an AppArmor profile for certspotter. certspo
 
 Ready? Let's get started!
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Introduction to AppArmor Profiles" %}}
+{{< step label="Introduction to AppArmor Profiles" >}}
 
 AppArmor profiles are simple text files. Absolute paths as well as file globbing can be used when specifying file access. Most file access rules specify the type of access which is allowed: 'r' (read), 'w' (write), 'm' (memory map as executable), 'k' (file locking), 'l' (creation hard links), and 'ix' to execute another program with the new program inheriting policy. Other file access rules also exist such as 'Px' (execute under another profile, after cleaning the environment), 'Cx' (execute under a child profile, after cleaning the environment), and 'Ux' (execute unconfined, after cleaning the environment).
 
@@ -52,11 +52,11 @@ To get started, let's install some useful AppArmor utilities and the application
 sudo apt install apparmor-easyprof apparmor-notify apparmor-utils certspotter
 ```
 
-{{% /step %}}
+{{< /step >}}
 
 
 
-{{% step label="Generating a basic profile" %}}
+{{< step label="Generating a basic profile" >}}
 
 The easiest way to get started is to create a skeleton profile, set AppArmor to complain mode for your target and then use the `aa-logprof` tool to evaluate the denials.
 
@@ -104,10 +104,10 @@ certspotter: /home/testuser/.certspotter/watchlist: open /home/testuser/.certspo
 ```
 This basic profile doesn't allow certspotter access to resources it needs, so let's look at the AppArmor denial messages to see what went wrong.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="AppArmor Denials and Complain Mode" %}}
+{{< step label="AppArmor Denials and Complain Mode" >}}
 
 AppArmor denials are logged to `/var/log/syslog` (or `/var/log/audit/audit.log` for non-DBus policy violations if auditd is installed). The kernel will rate limit AppArmor denials which can cause problems while profiling. You can avoid this by installing auditd or by adjusting rate limiting in the kernel:
 ```bash
@@ -136,10 +136,10 @@ Feb 23 13:34:24 tutorials audit[18643]: AVC apparmor="ALLOWED" operation="recvms
 ```
 because we haven't yet created the profile rules to allow it to access the network.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Using aa-logprof to Refine the Profile" %}}
+{{< step label="Using aa-logprof to Refine the Profile" >}}
 
 The `aa-logprof` tool will parse the AppArmor messages and suggest policy rules which would permit certspotter to run under confinement.
 
@@ -227,11 +227,11 @@ S
 ```
 When you Save the profile, `aa-logprof` automatically causes the profile to be reloaded which immediately silences all of the AppArmor messages about certspotter using the network.
 
-{{% /step %}}
+{{< /step >}}
 
 
 
-{{% step label="Hand Editing the Profile" %}}
+{{< step label="Hand Editing the Profile" >}}
 
 Let's go back and touch up the profile to allow certspotter to read and write from the `$HOME/.certspotter` directory.
 ```bash
@@ -242,11 +242,11 @@ let's change the `/home/*/.certspotter/watchlist r,` line to `owner @{HOME}/.cer
 $ sudo apparmor_parser -r /etc/apparmor.d/usr.bin.certspotter
 ```
 
-{{% /step %}}
+{{< /step >}}
 
 
 
-{{% step label="AppArmor deny rules" %}}
+{{< step label="AppArmor deny rules" >}}
 
 We're feeling especially paranoid today, so we are going to add in a few rules to ensure that certspotter can't exfiltrate some of the data from `$HOME`. While AppArmor profiles are default-deny by default, adding explicit deny rules can guard against profile mistakes:
 ```
@@ -275,10 +275,10 @@ It seems to be working with no new denials being generated, so let's take AppArm
 $ sudo aa-enforce certspotter
 ```
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="That's it!" %}}
+{{< step label="That's it!" >}}
 
 And that's it! You have generated your first AppArmor profile. You should probably ask someone else to review the final profile to make sure that privilege hasn't been over granted. Hop into #apparmor on OFTC to ask questions. Submit a pull request to add your profile into the extras directory in the [AppArmor project on Gitlab] (https://gitlab.com/apparmor/apparmor/tree/master/profiles/apparmor/profiles/extras) so that other AppArmor users benefit from your work.
 
@@ -295,4 +295,4 @@ For more description of AppArmor profile development see [Application isolation 
 
 For more information about certspotter, see [CertSpotter](https://sslmate.com/certspotter/)
 
-{{% /step %}}
+{{< /step >}}

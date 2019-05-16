@@ -6,7 +6,7 @@ tags: [tutorial,installation,usb,macOS,ubuntu,desktop]
 duration: 15:00
 ---
 
-{{% step label="Overview" duration="1:00" %}}
+{{< step label="Overview" duration="1:00" >}}
 
 With a bootable Ubuntu USB stick, you can:
 
@@ -22,11 +22,11 @@ Creating a bootable USB stick is very simple, especially if you're going to use 
 There are a few additional considerations when booting the USB stick on Apple hardware. This is because Apple's 'Startup Manager', summoned by holding the Option/alt (⌥) key when booting, won't detect the USB stick without a specific partition table and layout. We'll cover this in a later step.
 
 
-{{% /step %}}
+{{< /step >}}
 
 
 
-{{% step label="Prepare the USB stick" duration="5:00" %}}
+{{< step label="Prepare the USB stick" duration="5:00" >}}
 
 To ensure maximum compatibility with Apple hardware, we're going to first blank and reformat the USB stick using Apple's 'Disk Utility'. But this step can be skipped if you intend to use the USB stick with only generic PC hardware.
 
@@ -40,10 +40,10 @@ To ensure maximum compatibility with Apple hardware, we're going to first blank 
 
 > **Warning:** Disk Utility needs to be used with caution as selecting the wrong device or partition can result in data loss.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Install and run Etcher" duration="2:00" %}}
+{{< step label="Install and run Etcher" duration="2:00" >}}
 
 To write the ISO file to the USB stick, we're going to use a free and open source application called [Etcher][etcher]. After downloading this and clicking to mount the package, Etcher can either be run in-place or dragged into your Applications folder.
 
@@ -51,10 +51,10 @@ By default, recent versions of macOS block the running of applications from unid
 
 ![screenshot](https://assets.ubuntu.com/v1/d8a3ee9d-macos-usb-etcher-run.png)
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Etcher configuration" duration="2:00" %}}
+{{< step label="Etcher configuration" duration="2:00" >}}
 
 Etcher will configure and write to your USB device in three stages, each of which needs to be selected in turn:
 
@@ -66,10 +66,10 @@ Etcher will configure and write to your USB device in three stages, each of whic
 
 ![screenshot](https://assets.ubuntu.com/v1/48b60ed0-macos-usb-etcher-config.png)
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Write to device" duration="2:00" %}}
+{{< step label="Write to device" duration="2:00" >}}
 
 After entering your password, Etcher will start writing the ISO file to your USB device.
 
@@ -83,10 +83,10 @@ Congratulations! You now have Ubuntu on a USB stick, bootable and ready to go.
 
 > : **Warning:** After the write process has completed, macOS may inform you that 'The disk you inserted was not readable by this computer'. Don't select *Initialise*. Instead, select ***Eject*** and remove the USB device.
 
-{{% /step %}}
+{{< /step >}}
 
 
-{{% step label="Boot your Mac" duration="3:00" %}}
+{{< step label="Boot your Mac" duration="3:00" >}}
 
 If you want to use your USB stick with an Apple Mac, you will need to restart or power-on the Mac with the USB stick inserted **while** the `Option/alt` *(⌥)* key is pressed.
 
@@ -118,4 +118,4 @@ Finally, if you get stuck, help is always at hand:
 [ircsupport]: https://wiki.ubuntu.com/IRC/ChannelList
 [etcher]: https://etcher.io/
 
-{{% /step %}}
+{{< /step >}}
