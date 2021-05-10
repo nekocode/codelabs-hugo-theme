@@ -55,7 +55,7 @@
       <div class="main-inner site-width">
         <ul>
 
-          {{ range .Pages -}}
+          {{ range .Site.RegularPages -}}
           {{ if eq .Type "posts" -}}
           <li>
             <a href="{{ .Permalink }}"
